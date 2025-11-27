@@ -4,8 +4,8 @@ export const SITE_CONFIG = {
   url: 'https://avzx.vercel.app',
   ogImage: 'https://avzx.vercel.app/og.webp',
   links: {
-    twitter: 'https://twitter.com/jozefzin',
-    github: 'https://github.com/jjozef'
+    twitter: 'https://twitter.com/nxtvoid',
+    github: 'https://github.com/nxtvoid'
   }
 }
 

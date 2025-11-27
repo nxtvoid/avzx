@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/performance/noImgElement: intended for demo purposes */
 import { SITE_CONFIG } from '@/config'
 import { BtnDocsClient } from '@/components/btn-docs-client'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -12,7 +13,7 @@ export default function Home() {
     <div className='grid grow place-content-center gap-28 px-3'>
       <div className='grid place-content-center place-items-center gap-4'>
         <div className='text-center'>
-          <h1 className='text-9xl font-extrabold'>{SITE_CONFIG.name}</h1>
+          <h1 className='font-extrabold text-9xl'>{SITE_CONFIG.name}</h1>
           <p className='text-pretty font-mono text-lg'>
             {SITE_CONFIG.description}
           </p>
@@ -22,7 +23,7 @@ export default function Home() {
 
       <div className='flex flex-col gap-6 *:text-center'>
         <div className='grid gap-2'>
-          <h2 className='font-mono text-2xl font-semibold'>Most popular</h2>
+          <h2 className='font-mono font-semibold text-2xl'>Most popular</h2>
           <div className='flex items-center justify-center gap-2'>
             <Tooltip disableHoverableContent>
               <TooltipTrigger asChild>
@@ -33,7 +34,7 @@ export default function Home() {
                 />
               </TooltipTrigger>
               <TooltipContent
-                className='font-mono font-bold uppercase'
+                className='font-bold font-mono uppercase'
                 sideOffset={10}
               >
                 <p>With text, type, and size</p>
@@ -52,7 +53,7 @@ export default function Home() {
                 </Avatar>
               </TooltipTrigger>
               <TooltipContent
-                className='font-mono font-bold uppercase'
+                className='font-bold font-mono uppercase'
                 sideOffset={10}
               >
                 <p>Default usage</p>
@@ -71,7 +72,7 @@ export default function Home() {
                 </Avatar>
               </TooltipTrigger>
               <TooltipContent
-                className='font-mono font-bold uppercase'
+                className='font-bold font-mono uppercase'
                 sideOffset={10}
               >
                 <p>Default usage</p>
@@ -90,7 +91,7 @@ export default function Home() {
                 </Avatar>
               </TooltipTrigger>
               <TooltipContent
-                className='font-mono font-bold uppercase'
+                className='font-bold font-mono uppercase'
                 sideOffset={10}
               >
                 <p>Default usage</p>
@@ -99,7 +100,7 @@ export default function Home() {
           </div>
         </div>
         <div className='grid gap-2'>
-          <h2 className='font-mono text-2xl font-semibold'>Special</h2>
+          <h2 className='font-mono font-semibold text-2xl'>Special</h2>
           <div className='flex items-center justify-center gap-2'>
             <Tooltip disableHoverableContent>
               <TooltipTrigger asChild>
@@ -110,7 +111,7 @@ export default function Home() {
                 />
               </TooltipTrigger>
               <TooltipContent
-                className='font-mono font-bold uppercase'
+                className='font-bold font-mono uppercase'
                 sideOffset={10}
               >
                 <p>Rounded</p>
@@ -125,7 +126,7 @@ export default function Home() {
                 />
               </TooltipTrigger>
               <TooltipContent
-                className='font-mono font-bold uppercase'
+                className='font-bold font-mono uppercase'
                 sideOffset={10}
               >
                 <p>Custom color</p>
@@ -140,7 +141,7 @@ export default function Home() {
                 />
               </TooltipTrigger>
               <TooltipContent
-                className='font-mono font-bold uppercase'
+                className='font-bold font-mono uppercase'
                 sideOffset={10}
               >
                 <p>Pattern</p>
@@ -155,7 +156,7 @@ export default function Home() {
                 />
               </TooltipTrigger>
               <TooltipContent
-                className='font-mono font-bold uppercase'
+                className='font-bold font-mono uppercase'
                 sideOffset={10}
               >
                 <p>Emoji</p>

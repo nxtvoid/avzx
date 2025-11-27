@@ -1,6 +1,8 @@
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: this is intended to run only once on mount */
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import type React from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface MousePosition {
   x: number

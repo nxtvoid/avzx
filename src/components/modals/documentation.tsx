@@ -6,16 +6,16 @@ import Dynamic from './dynamic'
 const ModalDocumentation = () => {
   return (
     <Dynamic.Content className='flex h-[98dvh] flex-col gap-2 overflow-hidden bg-background/100 md:max-w-5xl'>
-      <DialogTitle className='text-center text-xl font-semibold md:text-left'>
+      <DialogTitle className='text-center font-semibold text-xl md:text-left'>
         Documentation
       </DialogTitle>
       <DialogDescription className='hidden'>Documentation</DialogDescription>
-      <section className='flex size-full flex-col gap-5 overflow-y-auto overflow-x-hidden py-6 scrollbar-thin max-md:px-4'>
+      <section className='scrollbar-thin flex size-full flex-col gap-5 overflow-y-auto overflow-x-hidden py-6 max-md:px-4'>
         <div className='grid gap-4'>
-          <h2 className='text-md font-sans font-semibold'>Most popular</h2>
+          <h2 className='font-sans font-semibold text-md'>Most popular</h2>
           <div className='grid gap-3 px-1.5'>
             <article className='flex flex-col gap-1 overflow-hidden'>
-              <h2 className='font-mono text-xs font-semibold text-muted-foreground'>
+              <h2 className='font-mono font-semibold text-muted-foreground text-xs'>
                 Default usage
               </h2>
               <DocsCode
@@ -25,7 +25,7 @@ const ModalDocumentation = () => {
               />
             </article>
             <article className='flex flex-col gap-1 overflow-hidden'>
-              <h2 className='font-mono text-xs font-semibold text-muted-foreground'>
+              <h2 className='font-mono font-semibold text-muted-foreground text-xs'>
                 Custom text <em>(Optional)</em>
               </h2>
               <DocsCode
@@ -35,7 +35,7 @@ const ModalDocumentation = () => {
               />
             </article>
             <article className='flex flex-col gap-1 overflow-hidden'>
-              <h2 className='font-mono text-xs font-semibold text-muted-foreground'>
+              <h2 className='font-mono font-semibold text-muted-foreground text-xs'>
                 Custom type <em>(Optional)</em>
               </h2>
               <DocsCode
@@ -45,7 +45,7 @@ const ModalDocumentation = () => {
               />
             </article>
             <article className='flex flex-col gap-1 overflow-hidden'>
-              <h2 className='font-mono text-xs font-semibold text-muted-foreground'>
+              <h2 className='font-mono font-semibold text-muted-foreground text-xs'>
                 Custom size <em>(Optional)</em>
               </h2>
               <DocsCode
@@ -57,12 +57,12 @@ const ModalDocumentation = () => {
           </div>
         </div>
         <div className='grid gap-4'>
-          <h2 className='text-md font-sans font-semibold'>
+          <h2 className='font-sans font-semibold text-md'>
             Special <em>(Optional)</em>
           </h2>
           <div className='grid gap-2 px-1.5'>
             <article className='flex flex-col gap-1 overflow-hidden'>
-              <h2 className='font-mono text-xs font-semibold text-muted-foreground'>
+              <h2 className='font-mono font-semibold text-muted-foreground text-xs'>
                 Rounded <em>(Circle)</em>
               </h2>
               <DocsCode
@@ -72,7 +72,7 @@ const ModalDocumentation = () => {
               />
             </article>
             <article className='flex flex-col gap-1 overflow-hidden'>
-              <h2 className='font-mono text-xs font-semibold text-muted-foreground'>
+              <h2 className='font-mono font-semibold text-muted-foreground text-xs'>
                 Color
               </h2>
               <DocsCode
@@ -82,7 +82,7 @@ const ModalDocumentation = () => {
               />
             </article>
             <article className='flex flex-col gap-1 overflow-hidden'>
-              <h2 className='font-mono text-xs font-semibold text-muted-foreground'>
+              <h2 className='font-mono font-semibold text-muted-foreground text-xs'>
                 Pattern <em>(Dots)</em>
               </h2>
               <DocsCode
@@ -92,7 +92,7 @@ const ModalDocumentation = () => {
               />
             </article>
             <article className='flex flex-col gap-1 overflow-hidden'>
-              <h2 className='font-mono text-xs font-semibold text-muted-foreground'>
+              <h2 className='font-mono font-semibold text-muted-foreground text-xs'>
                 Emoji
               </h2>
               <DocsCode

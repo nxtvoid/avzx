@@ -1,7 +1,7 @@
 'use client'
 
+import type { ThemeProviderProps } from 'next-themes/dist/types'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
-import { ThemeProviderProps } from 'next-themes/dist/types'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { ModalProvider } from '@/components/modals'
 

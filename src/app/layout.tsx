@@ -29,11 +29,11 @@ export const metadata: Metadata = {
   keywords: ['Avatar', 'Create', 'Design'],
   authors: [
     {
-      name: 'Jozef',
-      url: 'https://joseignacio.dev'
+      name: 'nxtvoid',
+      url: 'https://twitter.com/nxtvoid'
     }
   ],
-  creator: 'Jozef',
+  creator: 'nxtvoid',
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     title: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
     images: [SITE_CONFIG.ogImage],
-    creator: '@jozefzin'
+    creator: '@nxtvoid'
   },
   icons: {
     icon: '/favicon.ico',
@@ -80,7 +80,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang='en' suppressHydrationWarning>
       <body
         className={cn(
-          'selection:text-primary-background scrollbar-track-rounded-full scrollbar-thumb-rounded-full relative min-h-screen overflow-hidden bg-background font-sans text-secondary-foreground antialiased scrollbar-thin scrollbar-track-muted scrollbar-thumb-secondary-foreground selection:bg-primary-foreground',
+          'scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-thin scrollbar-track-muted scrollbar-thumb-secondary-foreground relative min-h-screen overflow-hidden bg-background font-sans text-secondary-foreground antialiased selection:bg-primary-foreground selection:text-primary-background',
           geistSans.variable,
           geistMono.variable
         )}
@@ -92,7 +92,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <main className='relative z-[1] flex min-h-screen flex-col duration-500 animate-in fade-in-5 slide-in-from-bottom-3'>
+          <main className='fade-in-5 slide-in-from-bottom-3 relative z-[1] flex min-h-screen animate-in flex-col duration-500'>
             {children}
           </main>
           <ParticlesDot />

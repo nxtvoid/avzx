@@ -17,7 +17,7 @@ const AvatarParamsSchema = z.object({
     .default(DEFAULT_AVATAR_CONFIG.size.toString())
     .transform((val) => {
       const parsed = parseInt(val, 10)
-      if (isNaN(parsed)) return DEFAULT_AVATAR_CONFIG.size
+      if (Number.isNaN(parsed)) return DEFAULT_AVATAR_CONFIG.size
       return parsed <= 0 ? DEFAULT_AVATAR_CONFIG.size : parsed
     })
     .pipe(z.number().int().positive())

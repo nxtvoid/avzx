@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { ImageResponse } from 'next/og'
 import { generateGradient } from '@/lib/gradient'
 import { getAvatarParamsSchema } from '@/zod/api'
@@ -9,15 +9,16 @@ export const preferredRegion = 'auto'
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { name: string } }
+  props: { params: Promise<{ name: string }> }
 ) {
+  const params = await props.params
   const { name } = params
 
   const searchParams = getSearchParamsWithArray(req.url ?? '')
   const { text, size, type, rounded, color, pattern, emoji } =
     getAvatarParamsSchema.parse(searchParams)
 
-  const gradient = generateGradient(name || Math.random() + '')
+  const gradient = generateGradient(name || `${Math.random()}`)
   const fontSize = (size * 0.9) / text.length
   const emojiSize = emoji ? size * 0.3 : 0
   const fromColor = color ? color : gradient.fromColor
@@ -114,62 +115,60 @@ export async function GET(
   }
 
   return new ImageResponse(
-    (
-      <div
-        style={{
-          width: size,
-          height: size,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: `linear-gradient(to bottom right, ${fromColor}, ${toColor})`,
-          borderRadius: rounded ? '50%' : '0',
-          overflow: 'hidden'
-        }}
-      >
-        {pattern && (
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(`
+    <div
+      style={{
+        width: size,
+        height: size,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: `linear-gradient(to bottom right, ${fromColor}, ${toColor})`,
+        borderRadius: rounded ? '50%' : '0',
+        overflow: 'hidden'
+      }}
+    >
+      {pattern && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(`
                 <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="10" cy="10" r="2" fill="currentColor" opacity="0.3" />
                 </svg>
               `)}")`,
-              backgroundSize: '20px 20px'
-            }}
-          />
-        )}
+            backgroundSize: '20px 20px'
+          }}
+        />
+      )}
 
-        {text && (
-          <div
-            style={{
-              fontSize: fontSize,
-              fontWeight: 'bold',
-              color: 'white',
-              marginBottom: emoji ? '10px' : '0'
-            }}
-          >
-            {text}
-          </div>
-        )}
+      {text && (
+        <div
+          style={{
+            fontSize: fontSize,
+            fontWeight: 'bold',
+            color: 'white',
+            marginBottom: emoji ? '10px' : '0'
+          }}
+        >
+          {text}
+        </div>
+      )}
 
-        {emoji && (
-          <div
-            style={{
-              fontSize: emojiSize,
-              lineHeight: 1
-            }}
-          >
-            {emoji}
-          </div>
-        )}
-      </div>
-    ),
+      {emoji && (
+        <div
+          style={{
+            fontSize: emojiSize,
+            lineHeight: 1
+          }}
+        >
+          {emoji}
+        </div>
+      )}
+    </div>,
     {
       width: size,
       height: size
