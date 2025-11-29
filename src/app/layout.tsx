@@ -3,20 +3,20 @@ import './globals.css'
 import type { Metadata, Viewport } from 'next'
 import { SITE_CONFIG } from '@/config'
 import { cn } from '@/lib/utils'
+import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/react'
 import { ParticlesDot } from '@/components/particles-dot'
-import { ThemeProvider } from './providers'
-import localFont from 'next/font/local'
+import { TooltipProvider } from '@/components/ui/tooltip'
+import { Geist, Geist_Mono } from 'next/font/google'
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
+const geistSans = Geist({
   variable: '--font-geist-sans',
-  weight: '100 200 300 400 500 600 900'
+  subsets: ['latin']
 })
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
+
+const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
-  weight: '100 900'
+  subsets: ['latin']
 })
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL(SITE_CONFIG.url),
   description: SITE_CONFIG.description,
-  keywords: ['Avatar', 'Create', 'Design'],
+  keywords: ['Avatar', 'Create', 'Design', 'Generate', 'Avatars', 'nxtvoid'],
   authors: [
     {
       name: 'nxtvoid',
@@ -80,24 +80,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang='en' suppressHydrationWarning>
       <body
         className={cn(
-          'scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-thin scrollbar-track-muted scrollbar-thumb-secondary-foreground relative min-h-screen overflow-hidden bg-background font-sans text-secondary-foreground antialiased selection:bg-primary-foreground selection:text-primary-background',
+          'scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-thin scrollbar-track-muted scrollbar-thumb-secondary-foreground relative min-h-dvh overflow-x-hidden bg-background font-sans text-secondary-foreground antialiased selection:bg-primary selection:text-accent',
           geistSans.variable,
           geistMono.variable
         )}
-        vaul-drawer-wrapper=''
       >
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className='fade-in-5 slide-in-from-bottom-3 relative z-[1] flex min-h-screen animate-in flex-col duration-500'>
+        <TooltipProvider delayDuration={25}>
+          <main className='relative z-[1] flex size-full min-h-screen flex-col overflow-auto'>
             {children}
           </main>
-          <ParticlesDot />
-          <Analytics />
-        </ThemeProvider>
+        </TooltipProvider>
+        <Toaster closeButton />
+        <ParticlesDot />
+        <Analytics />
       </body>
     </html>
   )

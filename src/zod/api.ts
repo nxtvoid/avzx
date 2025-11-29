@@ -1,34 +1,35 @@
 import { z } from 'zod'
-import { DEFAULT_AVATAR_CONFIG } from '@/lib/constants'
+import { processText } from '@/lib/process-text'
 import { booleanQuerySchema } from './misc'
 import { validateHTMLColorHex } from 'validate-color'
-import { processText } from '@/lib/api/process-text'
+import { gradients, patterns, shapes, sources, types } from './enums'
 
 const AvatarParamsSchema = z.object({
   text: z
     .string()
     .optional()
-    .default(DEFAULT_AVATAR_CONFIG.text)
     .transform(processText)
     .describe('The text to display on the avatar'),
   size: z
     .string()
     .optional()
-    .default(DEFAULT_AVATAR_CONFIG.size.toString())
+    .default('120')
     .transform((val) => {
-      const parsed = parseInt(val, 10)
-      if (Number.isNaN(parsed)) return DEFAULT_AVATAR_CONFIG.size
-      return parsed <= 0 ? DEFAULT_AVATAR_CONFIG.size : parsed
+      const parsed = Number.parseInt(val, 10)
+      if (Number.isNaN(parsed)) return 120
+      return parsed <= 0 ? 120 : parsed
     })
     .pipe(z.number().int().positive())
-    .describe(
-      'The size of the avatar (positive integer, defaults to 120 if invalid)'
-    ),
+    .describe('The size of the avatar'),
   type: z
-    .enum(['svg', 'png'])
+    .enum(types.options)
     .optional()
-    .default(DEFAULT_AVATAR_CONFIG.type)
-    .describe('The file type of the avatar')
+    .default('svg')
+    .describe('The file type of the avatar'),
+  source: z
+    .enum(sources.options)
+    .default('external')
+    .describe('The source of the avatar')
 })
 
 export const getAvatarParamsSchema = AvatarParamsSchema.merge(
@@ -44,14 +45,13 @@ export const getAvatarParamsSchema = AvatarParamsSchema.merge(
       .transform((val) => {
         if (!val) return undefined
         const hex = `#${val}`
-
         if (!validateHTMLColorHex(hex)) return undefined
         return hex
       }),
-    pattern: booleanQuerySchema
+    pattern: z
+      .enum(patterns.options)
       .optional()
-      .default('false')
-      .describe('A dot pattern is added to the background of the avatar.'),
+      .describe('The pattern to overlay on the avatar'),
     emoji: z
       .string()
       .optional()
@@ -59,6 +59,11 @@ export const getAvatarParamsSchema = AvatarParamsSchema.merge(
       .transform((val) => {
         if (!val) return undefined
         return val.length > 2 ? val.slice(0, 2) : val
-      })
+      }),
+    shape: z
+      .enum(shapes.options)
+      .optional()
+      .describe('The shape of the avatar'),
+    gradient: z.enum(gradients.options).optional().describe('The gradient type')
   })
 )
