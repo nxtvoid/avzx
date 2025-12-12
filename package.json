@@ -1,6 +1,6 @@
 {
   "name": "avzx",
-  "version": "0.1.0",
+  "version": "0.1 .0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -19,9 +19,9 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.441.0",
-    "next": "16.0.7",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
+    "next": "16.0.10",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "sonner": "^2.0.7",
     "tailwind-merge": "^2.5.2",
     "tailwind-scrollbar": "^3.1.0",
