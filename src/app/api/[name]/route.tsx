@@ -22,6 +22,23 @@ export async function GET(
   const params = await props.params
   const { name } = params
 
+  const parsed = getAvatarParamsSchema.safeParse(
+    getSearchParamsWithArray(req.url ?? '')
+  )
+
+  if (!parsed.success) {
+    return Response.json(
+      {
+        error: 'Invalid query parameters',
+        issues: parsed.error.issues.map((issue) => ({
+          param: issue.path.join('.'),
+          message: issue.message
+        }))
+      },
+      { status: 400 }
+    )
+  }
+
   const {
     source,
     text,
@@ -33,7 +50,7 @@ export async function GET(
     emoji,
     shape: shapeParam,
     gradient
-  } = getAvatarParamsSchema.parse(getSearchParamsWithArray(req.url ?? ''))
+  } = parsed.data
 
   const size = clampSize(rawSize)
   const gradientData = generateGradient(name || `${Math.random()}`)
