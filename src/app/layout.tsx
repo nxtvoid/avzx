@@ -86,7 +86,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <TooltipProvider delayDuration={25}>
-          <main className='relative z-[1] flex size-full min-h-screen flex-col overflow-auto'>
+          <main className='relative z-1 flex size-full min-h-screen flex-col overflow-auto'>
             {children}
           </main>
         </TooltipProvider>
