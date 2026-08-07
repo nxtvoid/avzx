@@ -32,38 +32,33 @@ const AvatarParamsSchema = z.object({
     .describe('The source of the avatar')
 })
 
-export const getAvatarParamsSchema = AvatarParamsSchema.merge(
-  z.object({
-    rounded: booleanQuerySchema
-      .optional()
-      .default('false')
-      .describe('Whether the avatar should be rounded'),
-    color: z
-      .string()
-      .optional()
-      .describe('A hex color to use for the avatar')
-      .transform((val) => {
-        if (!val) return undefined
-        const hex = `#${val}`
-        if (!validateHTMLColorHex(hex)) return undefined
-        return hex
-      }),
-    pattern: z
-      .enum(patterns.options)
-      .optional()
-      .describe('The pattern to overlay on the avatar'),
-    emoji: z
-      .string()
-      .optional()
-      .describe('An emoji to use as the avatar')
-      .transform((val) => {
-        if (!val) return undefined
-        return val.length > 2 ? val.slice(0, 2) : val
-      }),
-    shape: z
-      .enum(shapes.options)
-      .optional()
-      .describe('The shape of the avatar'),
-    gradient: z.enum(gradients.options).optional().describe('The gradient type')
-  })
-)
+export const getAvatarParamsSchema = AvatarParamsSchema.extend({
+  rounded: booleanQuerySchema
+    .optional()
+    .default(false)
+    .describe('Whether the avatar should be rounded'),
+  color: z
+    .string()
+    .optional()
+    .describe('A hex color to use for the avatar')
+    .transform((val) => {
+      if (!val) return undefined
+      const hex = `#${val}`
+      if (!validateHTMLColorHex(hex)) return undefined
+      return hex
+    }),
+  pattern: z
+    .enum(patterns.options)
+    .optional()
+    .describe('The pattern to overlay on the avatar'),
+  emoji: z
+    .string()
+    .optional()
+    .describe('An emoji to use as the avatar')
+    .transform((val) => {
+      if (!val) return undefined
+      return val.length > 2 ? val.slice(0, 2) : val
+    }),
+  shape: z.enum(shapes.options).optional().describe('The shape of the avatar'),
+  gradient: z.enum(gradients.options).optional().describe('The gradient type')
+})
