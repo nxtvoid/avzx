@@ -15,7 +15,7 @@ function DocCard({ example }: { example: DataExample }) {
   }
 
   return (
-    <div className='group relative rounded-xl border border-border bg-card p-5 transition-all hover:border-foreground/20 hover:shadow-sm'>
+    <div className='group relative rounded-xl border border-border bg-card p-5 transition-all hover:border-foreground/20 hover:shadow-xs'>
       <div className='flex items-start justify-between gap-4'>
         <div className='flex-1 space-y-3'>
           <div className='flex items-center gap-2'>
@@ -65,7 +65,7 @@ function DocCard({ example }: { example: DataExample }) {
         </div>
 
         <div className='shrink-0'>
-          <Avatar className='size-16 rounded-lg border-0 shadow-sm'>
+          <Avatar className='size-16 rounded-lg border-0 shadow-xs'>
             <AvatarImage
               src={example.url}
               alt={example.title}
@@ -87,7 +87,7 @@ export default function DocsPage() {
     <section className='mx-auto w-full max-w-3xl space-y-6 py-16'>
       <div className='space-y-2'>
         <Link href='/' className='group flex items-center gap-2'>
-          <div className='rounded-md p-1 transition-all group-hover:translate-x-[-2px] group-hover:bg-accent group-hover:text-accent-foreground'>
+          <div className='rounded-md p-1 transition-all group-hover:-translate-x-0.5 group-hover:bg-accent group-hover:text-accent-foreground'>
             <ChevronsLeftIcon className='size-4' />
           </div>
           <h2 className='font-bold text-2xl tracking-tight'>API Reference</h2>

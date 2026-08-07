@@ -4,7 +4,7 @@ import type { Metadata, Viewport } from 'next'
 import { SITE_CONFIG } from '@/config'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/sonner'
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from '@vercel/analytics/next'
 import { ParticlesDot } from '@/components/particles-dot'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { Geist, Geist_Mono } from 'next/font/google'
@@ -86,7 +86,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <TooltipProvider delayDuration={25}>
-          <main className='relative z-[1] flex size-full min-h-screen flex-col overflow-auto'>
+          <main className='relative z-1 flex size-full min-h-screen flex-col overflow-auto'>
             {children}
           </main>
         </TooltipProvider>
