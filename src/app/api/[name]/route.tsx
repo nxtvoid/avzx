@@ -13,8 +13,6 @@ import {
   renderAvatarSvg
 } from '@/lib/avatar/render'
 
-export const preferredRegion = 'auto'
-
 export async function GET(
   req: NextRequest,
   props: { params: Promise<{ name: string }> }
