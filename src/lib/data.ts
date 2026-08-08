@@ -6,7 +6,7 @@ interface DataExample {
   badge: 'default' | 'optional' | 'new'
   description: string
   url: string
-  params?: { key: string; value: string; description?: string }[]
+  params?: { key: string; description: string }[]
 }
 
 const DATA_EXAMPLES: DataExample[] = [
@@ -20,7 +20,6 @@ const DATA_EXAMPLES: DataExample[] = [
     params: [
       {
         key: 'name',
-        value: 'vercel',
         description: 'Any string to generate a unique avatar'
       }
     ]
@@ -33,10 +32,9 @@ const DATA_EXAMPLES: DataExample[] = [
       'Add initials or custom text overlay. Full names are automatically converted to initials.',
     url: `${SITE_CONFIG.url}/john-doe?text=John Doe&source=self`,
     params: [
-      { key: 'name', value: 'john-doe', description: 'Base name for gradient' },
+      { key: 'name', description: 'Base name for gradient' },
       {
         key: 'text',
-        value: 'John Doe',
         description: 'Displayed text (auto-converts to JD)'
       }
     ]
@@ -48,7 +46,7 @@ const DATA_EXAMPLES: DataExample[] = [
     description:
       'Choose between SVG (default, scalable) or PNG format for your avatar.',
     url: `${SITE_CONFIG.url}/avatar?type=png&source=self`,
-    params: [{ key: 'type', value: 'png', description: 'svg (default) or png' }]
+    params: [{ key: 'type', description: 'svg (default) or png' }]
   },
   {
     id: 'size',
@@ -59,8 +57,49 @@ const DATA_EXAMPLES: DataExample[] = [
     params: [
       {
         key: 'size',
-        value: '256',
         description: 'Size in pixels (default: 120)'
+      }
+    ]
+  },
+  {
+    id: 'style',
+    title: 'Avatar styles',
+    badge: 'new',
+    description:
+      'Switch the kind of mark entirely: mirrored identicon, concentric rings, flat geometry, or a single oversized initial. Unlike the default, initials and glyph read the letters off the name when no text is given.',
+    url: `${SITE_CONFIG.url}/avatar?style=identicon&source=self`,
+    params: [
+      {
+        key: 'style',
+        description: 'gradient | initials | identicon | rings | bauhaus | glyph'
+      }
+    ]
+  },
+  {
+    id: 'initials',
+    title: 'Initials from the name',
+    badge: 'new',
+    description:
+      'The default draws the gradient alone. Ask for the initials style and the letters are derived from the name, splitting on slug separators.',
+    url: `${SITE_CONFIG.url}/john-doe?style=initials&source=self`,
+    params: [
+      {
+        key: 'style',
+        description: 'john-doe becomes JD, octocat becomes OC'
+      }
+    ]
+  },
+  {
+    id: 'palette',
+    title: 'Colour palettes',
+    badge: 'new',
+    description:
+      'Shift the whole colour range without picking colours by hand. Still deterministic from the name.',
+    url: `${SITE_CONFIG.url}/avatar?palette=pastel&source=self`,
+    params: [
+      {
+        key: 'palette',
+        description: 'vivid | pastel | earth | mono | neon'
       }
     ]
   },
@@ -74,7 +113,6 @@ const DATA_EXAMPLES: DataExample[] = [
     params: [
       {
         key: 'shape',
-        value: 'squircle',
         description: 'square | circle | squircle | hexagon'
       }
     ]
@@ -88,7 +126,6 @@ const DATA_EXAMPLES: DataExample[] = [
     params: [
       {
         key: 'gradient',
-        value: 'radial',
         description: 'linear | radial | conic | mesh'
       }
     ]
@@ -102,7 +139,6 @@ const DATA_EXAMPLES: DataExample[] = [
     params: [
       {
         key: 'pattern',
-        value: 'dots',
         description: 'dots | grid | stripes | noise'
       }
     ]
@@ -114,9 +150,7 @@ const DATA_EXAMPLES: DataExample[] = [
     description:
       'Override the auto-generated gradient with a specific hex color.',
     url: `${SITE_CONFIG.url}/avatar?color=6366f1&source=self`,
-    params: [
-      { key: 'color', value: '6366f1', description: 'Hex color without #' }
-    ]
+    params: [{ key: 'color', description: 'Hex color without #' }]
   },
   {
     id: 'emoji',
@@ -125,8 +159,8 @@ const DATA_EXAMPLES: DataExample[] = [
     description: 'Add an emoji to your avatar for extra personality.',
     url: `${SITE_CONFIG.url}/avatar?emoji=🚀&text=AB&source=self`,
     params: [
-      { key: 'emoji', value: '🚀', description: 'Any emoji character' },
-      { key: 'text', value: 'AB', description: 'Optional text above emoji' }
+      { key: 'emoji', description: 'Any emoji character' },
+      { key: 'text', description: 'Optional text above emoji' }
     ]
   }
 ]
