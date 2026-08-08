@@ -161,7 +161,10 @@ export function getAvatarHeaders(
 export function generateCacheKey(
   ...args: (string | number | boolean | undefined)[]
 ): string {
-  const str = args.filter(Boolean).join('-')
+  // Serialised rather than joined on `-`: dropping falsy values and gluing the
+  // rest together made `/a?text=b` and `/a-B` collapse onto the same key.
+  // JSON keeps the argument boundaries and the empty slots.
+  const str = JSON.stringify(args)
   let hash = 5381
 
   for (let i = 0; i < str.length; i++) {
