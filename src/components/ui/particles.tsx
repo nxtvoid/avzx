@@ -2,33 +2,7 @@
 'use client'
 
 import type React from 'react'
-import { useEffect, useRef, useState } from 'react'
-
-interface MousePosition {
-  x: number
-  y: number
-}
-
-function MousePosition(): MousePosition {
-  const [mousePosition, setMousePosition] = useState<MousePosition>({
-    x: 0,
-    y: 0
-  })
-
-  useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      setMousePosition({ x: event.clientX, y: event.clientY })
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-    }
-  }, [])
-
-  return mousePosition
-}
+import { useEffect, useRef } from 'react'
 
 interface ParticlesProps {
   className?: string
@@ -73,9 +47,9 @@ const Particles: React.FC<ParticlesProps> = ({
   const canvasContainerRef = useRef<HTMLDivElement>(null)
   const context = useRef<CanvasRenderingContext2D | null>(null)
   const circles = useRef<Circle[]>([])
-  const mousePosition = MousePosition()
   const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
   const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 })
+  const frameId = useRef<number | undefined>(undefined)
   const dpr = typeof window !== 'undefined' ? window.devicePixelRatio : 1
 
   useEffect(() => {
@@ -84,16 +58,24 @@ const Particles: React.FC<ParticlesProps> = ({
     }
     initCanvas()
     animate()
+
+    const handleMouseMove = (event: MouseEvent) =>
+      onMouseMove(event.clientX, event.clientY)
+
     window.addEventListener('resize', initCanvas)
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
 
     return () => {
       window.removeEventListener('resize', initCanvas)
+      window.removeEventListener('mousemove', handleMouseMove)
+      // Without this the loop survives the unmount and keeps animating 200
+      // particles against a detached canvas — one orphaned loop per remount
+      // under Strict Mode or HMR.
+      if (frameId.current !== undefined) {
+        window.cancelAnimationFrame(frameId.current)
+      }
     }
   }, [color])
-
-  useEffect(() => {
-    onMouseMove()
-  }, [mousePosition.x, mousePosition.y])
 
   useEffect(() => {
     initCanvas()
@@ -104,17 +86,22 @@ const Particles: React.FC<ParticlesProps> = ({
     drawParticles()
   }
 
-  const onMouseMove = () => {
-    if (canvasRef.current) {
-      const rect = canvasRef.current.getBoundingClientRect()
-      const { w, h } = canvasSize.current
-      const x = mousePosition.x - rect.left - w / 2
-      const y = mousePosition.y - rect.top - h / 2
-      const inside = x < w / 2 && x > -w / 2 && y < h / 2 && y > -h / 2
-      if (inside) {
-        mouse.current.x = x
-        mouse.current.y = y
-      }
+  /**
+   * Writes straight into the ref the animation loop reads. The pointer
+   * position was React state before, so every `mousemove` rerendered the
+   * component to feed a value that only ever mutated the canvas.
+   */
+  const onMouseMove = (clientX: number, clientY: number) => {
+    if (!canvasRef.current) return
+
+    const rect = canvasRef.current.getBoundingClientRect()
+    const { w, h } = canvasSize.current
+    const x = clientX - rect.left - w / 2
+    const y = clientY - rect.top - h / 2
+
+    if (x < w / 2 && x > -w / 2 && y < h / 2 && y > -h / 2) {
+      mouse.current.x = x
+      mouse.current.y = y
     }
   }
 
@@ -262,7 +249,7 @@ const Particles: React.FC<ParticlesProps> = ({
         drawCircle(newCircle)
       }
     })
-    window.requestAnimationFrame(animate)
+    frameId.current = window.requestAnimationFrame(animate)
   }
 
   return (
