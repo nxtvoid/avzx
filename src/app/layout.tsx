@@ -5,8 +5,8 @@ import { SITE_CONFIG } from '@/config'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
+import { SiteFooter } from '@/components/site-footer'
 import { ParticlesDot } from '@/components/particles-dot'
-import { TooltipProvider } from '@/components/ui/tooltip'
 import { Geist, Geist_Mono } from 'next/font/google'
 
 const geistSans = Geist({
@@ -85,11 +85,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
           geistMono.variable
         )}
       >
-        <TooltipProvider delayDuration={25}>
-          <main className='relative z-1 flex size-full min-h-screen flex-col overflow-auto'>
-            {children}
-          </main>
-        </TooltipProvider>
+        <main className='relative z-1 flex size-full min-h-screen flex-col overflow-auto'>
+          {children}
+          <SiteFooter />
+        </main>
         <Toaster closeButton />
         <ParticlesDot />
         <Analytics />
