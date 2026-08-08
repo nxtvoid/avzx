@@ -50,12 +50,13 @@ export const getAvatarParamsSchema = AvatarParamsSchema.extend({
     .string()
     .optional()
     .describe('A hex color to use for the avatar')
-    .transform((val) => {
-      if (!val) return undefined
-      const hex = `#${val}`
-      if (!validateHTMLColorHex(hex)) return undefined
-      return hex
-    }),
+    // Rejected rather than ignored: silently swapping a typo for the generated
+    // gradient returns something that looks right, so the mistake never
+    // surfaces. Enums already answer 400, and the docs promise it.
+    .refine((val) => val === undefined || validateHTMLColorHex(`#${val}`), {
+      message: 'Expected a hex colour without the leading #, e.g. 6366f1'
+    })
+    .transform((val) => (val === undefined ? undefined : `#${val}`)),
   pattern: z
     .enum(patterns.options)
     .optional()
