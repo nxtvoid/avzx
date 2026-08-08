@@ -1,8 +1,19 @@
-import type { GradientType, PatternType, ShapeType } from '@/zod/enums'
+import type {
+  GradientType,
+  PatternType,
+  ShapeType,
+  StyleType
+} from '@/zod/enums'
 import { sanitizeSvgText, clampSize } from './sanitize'
 import { generateShapeClipPath, needsClipPath } from './shapes'
 import { generatePatternDef, generatePatternElement } from './patterns'
-import { generateGradientDef, getContrastTextColor } from './gradient'
+import {
+  djb2,
+  generateGradientDef,
+  getContrastTextColor,
+  mixColors
+} from './gradient'
+import { generateStyleBody, styleBackdrop, styleText } from './styles'
 
 export interface AvatarRenderConfig {
   name: string
@@ -13,6 +24,7 @@ export interface AvatarRenderConfig {
   shape?: ShapeType
   pattern?: PatternType
   gradientType?: GradientType
+  style?: StyleType
   emoji?: string
   fontFamily?: string
 }
@@ -29,6 +41,7 @@ function calculateFontSize(size: number, textLength: number): number {
 
 export function renderAvatarSvg(config: AvatarRenderConfig): string {
   const {
+    name,
     text,
     size: rawSize,
     fromColor,
@@ -36,43 +49,59 @@ export function renderAvatarSvg(config: AvatarRenderConfig): string {
     shape,
     pattern,
     gradientType,
+    style,
     emoji,
     fontFamily = 'system-ui, -apple-system, sans-serif'
   } = config
 
   const size = clampSize(rawSize)
-  const sanitizedText = sanitizeSvgText(text)
   const sanitizedEmoji = emoji ? sanitizeSvgText(emoji) : ''
+  // Generative styles draw their own marks, so the initials are dropped;
+  // `glyph` keeps a single character. Escaping happens *after* truncation —
+  // slicing an already-escaped string splits entities like `&lt;` into a bare
+  // `&`, which is malformed XML.
+  const sanitizedText = sanitizeSvgText(styleText(style, text, name))
 
-  const fontSize = calculateFontSize(size, sanitizedText.length)
-  const emojiSize = emoji ? size * 0.3 : 0
-  const textColor = getContrastTextColor(fromColor)
+  const fontSize =
+    style === 'glyph'
+      ? size * 0.58
+      : calculateFontSize(size, sanitizedText.length)
+  const emojiSize = emoji ? size * 0.24 : 0
+  // Text over a gradient has to be measured against the midpoint, not against
+  // either end — flat-background styles are measured against the field itself.
+  const textColor = getContrastTextColor(
+    styleBackdrop(style, fromColor, mixColors(fromColor, toColor))
+  )
   const patternColor = textColor === '#ffffff' ? '#ffffff' : '#000000'
 
   const useClipPath = needsClipPath(shape)
   const clipPathAttr = useClipPath ? 'clip-path="url(#shapeClip)"' : ''
 
-  return `<svg 
-    width="${size}" 
-    height="${size}" 
-    viewBox="0 0 ${size} ${size}" 
+  const styleBody = generateStyleBody(style, {
+    size,
+    hash: djb2(name),
+    fromColor,
+    toColor,
+    contrastColor: textColor,
+    clipAttr: clipPathAttr
+  })
+
+  return `<svg
+    width="${size}"
+    height="${size}"
+    viewBox="0 0 ${size} ${size}"
     xmlns="http://www.w3.org/2000/svg"
   >
     <defs>
-      ${generateGradientDef(gradientType, { fromColor, toColor })}
+      ${generateGradientDef(gradientType, { fromColor, toColor, size })}
       ${useClipPath ? generateShapeClipPath(shape, size) : ''}
       ${generatePatternDef(pattern, { color: patternColor })}
     </defs>
-    
-    <rect 
-      fill="url(#gradient)"
-      x="0" y="0"
-      width="${size}" height="${size}"
-      ${clipPathAttr}
-    />
-    
+
+    ${styleBody}
+
     ${generatePatternElement(pattern, size, useClipPath)}
-    
+
     ${
       sanitizedText
         ? `
@@ -101,7 +130,7 @@ export function renderAvatarSvg(config: AvatarRenderConfig): string {
         alignment-baseline="central"
         dominant-baseline="central"
         text-anchor="middle"
-        font-size="${emojiSize - 15}"
+        font-size="${emojiSize}"
         ${clipPathAttr}
       >${sanitizedEmoji}</text>
     `

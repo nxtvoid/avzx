@@ -1,8 +1,17 @@
 import { z } from 'zod'
 import { processText } from '@/lib/process-text'
+import { takeGraphemes } from '@/lib/graphemes'
 import { booleanQuerySchema } from './misc'
 import { validateHTMLColorHex } from 'validate-color'
-import { gradients, patterns, shapes, sources, types } from './enums'
+import {
+  gradients,
+  palettes,
+  patterns,
+  shapes,
+  sources,
+  styles,
+  types
+} from './enums'
 
 const AvatarParamsSchema = z.object({
   text: z
@@ -57,8 +66,20 @@ export const getAvatarParamsSchema = AvatarParamsSchema.extend({
     .describe('An emoji to use as the avatar')
     .transform((val) => {
       if (!val) return undefined
-      return val.length > 2 ? val.slice(0, 2) : val
+      // One grapheme, not two UTF-16 units: slicing splits flags and ZWJ
+      // sequences into fragments that render as a different glyph.
+      return takeGraphemes(val, 1) || undefined
     }),
   shape: z.enum(shapes.options).optional().describe('The shape of the avatar'),
-  gradient: z.enum(gradients.options).optional().describe('The gradient type')
+  gradient: z.enum(gradients.options).optional().describe('The gradient type'),
+  palette: z
+    .enum(palettes.options)
+    .optional()
+    .default('vivid')
+    .describe('The colour range used to derive the gradient'),
+  style: z
+    .enum(styles.options)
+    .optional()
+    .default('gradient')
+    .describe('The kind of avatar to generate')
 })
