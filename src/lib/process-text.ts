@@ -1,3 +1,5 @@
+import { takeGraphemes, toGraphemes } from './graphemes'
+
 export function processText(text: string | undefined): string {
   if (!text || text.trim() === '') return ''
 
@@ -7,12 +9,12 @@ export function processText(text: string | undefined): string {
   let result: string
 
   if (words.length > 1) {
-    result = words
-      .map((word) => word.charAt(0))
-      .join('')
-      .slice(0, 2)
+    result = takeGraphemes(
+      words.map((word) => toGraphemes(word)[0] ?? '').join(''),
+      2
+    )
   } else {
-    result = trimmedText.slice(0, 2)
+    result = takeGraphemes(trimmedText, 2)
   }
 
   return result.toUpperCase()
