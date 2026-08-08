@@ -1,36 +1,39 @@
 import { SITE_CONFIG } from '@/config'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { SparklesIcon } from 'lucide-react'
+import { CopyButton } from '@/components/ui/copy-button'
 import { MostPopularExamples } from '@/components/examples'
 import Link from 'next/link'
 
+const SAMPLE_URL = `${SITE_CONFIG.url}/your-name`
+const SAMPLE_HOST = SITE_CONFIG.url.replace(/^https?:\/\//, '')
+
 export default function Home() {
   return (
-    <section className='grid flex-1 gap-16'>
-      <article className='grid place-content-center place-items-center gap-4'>
-        <Badge className='pointer-events-none gap-2 border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 font-mono text-emerald-700 text-sm transition-all hover:border-emerald-500/50 hover:bg-emerald-500/20'>
-          <SparklesIcon className='size-4' />
-          <span>
-            <strong>v2.0</strong> — New variants.
-          </span>
-        </Badge>
-        <div className='text-center'>
-          <h1 className='font-extrabold text-[10rem] leading-tight tracking-wider'>
+    <section className='flex flex-1 flex-col gap-24 px-6 py-16'>
+      <article className='flex flex-1 flex-col items-center justify-center gap-6'>
+        <div className='grid gap-3 text-center'>
+          <h1 className='font-extrabold text-[clamp(4rem,18vw,10rem)] leading-[0.9] tracking-wider'>
             {SITE_CONFIG.name}
           </h1>
-          <p className='text-pretty font-mono text-lg'>
+          <p className='text-pretty font-mono text-base sm:text-lg'>
             {SITE_CONFIG.description}
           </p>
         </div>
+
+        <div className='flex w-full max-w-sm items-center gap-2 rounded-lg border border-border bg-card/70 py-2 pr-2 pl-3 backdrop-blur-sm'>
+          <code className='min-w-0 flex-1 truncate font-mono text-sm'>
+            <span className='text-muted-foreground'>{SAMPLE_HOST}/</span>
+            <span className='font-medium'>your-name</span>
+          </code>
+          <CopyButton text={SAMPLE_URL} />
+        </div>
+
         <Button className='select-none font-mono' asChild>
           <Link href='/docs'>Documentation</Link>
         </Button>
       </article>
 
-      <article className='flex flex-col gap-10 *:text-center'>
-        <MostPopularExamples />
-      </article>
+      <MostPopularExamples />
     </section>
   )
 }

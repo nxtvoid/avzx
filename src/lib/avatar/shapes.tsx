@@ -40,5 +40,8 @@ export function generateShapeClipPath(shape: ShapeType, size: number): string {
 }
 
 export function needsClipPath(shape: ShapeType): boolean {
-  return shape !== 'square'
+  // `shape` is optional on the render config, and an omitted shape means the
+  // default square. Treating `undefined` as "needs clipping" emitted a
+  // `clip-path` pointing at a `<clipPath>` that was never defined.
+  return shape !== undefined && shape !== 'square'
 }

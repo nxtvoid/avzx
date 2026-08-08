@@ -1,8 +1,17 @@
 import { z } from 'zod'
 import { processText } from '@/lib/process-text'
+import { takeGraphemes } from '@/lib/graphemes'
 import { booleanQuerySchema } from './misc'
 import { validateHTMLColorHex } from 'validate-color'
-import { gradients, patterns, shapes, sources, types } from './enums'
+import {
+  gradients,
+  palettes,
+  patterns,
+  shapes,
+  sources,
+  styles,
+  types
+} from './enums'
 
 const AvatarParamsSchema = z.object({
   text: z
@@ -41,12 +50,13 @@ export const getAvatarParamsSchema = AvatarParamsSchema.extend({
     .string()
     .optional()
     .describe('A hex color to use for the avatar')
-    .transform((val) => {
-      if (!val) return undefined
-      const hex = `#${val}`
-      if (!validateHTMLColorHex(hex)) return undefined
-      return hex
-    }),
+    // Rejected rather than ignored: silently swapping a typo for the generated
+    // gradient returns something that looks right, so the mistake never
+    // surfaces. Enums already answer 400, and the docs promise it.
+    .refine((val) => val === undefined || validateHTMLColorHex(`#${val}`), {
+      message: 'Expected a hex colour without the leading #, e.g. 6366f1'
+    })
+    .transform((val) => (val === undefined ? undefined : `#${val}`)),
   pattern: z
     .enum(patterns.options)
     .optional()
@@ -57,8 +67,20 @@ export const getAvatarParamsSchema = AvatarParamsSchema.extend({
     .describe('An emoji to use as the avatar')
     .transform((val) => {
       if (!val) return undefined
-      return val.length > 2 ? val.slice(0, 2) : val
+      // One grapheme, not two UTF-16 units: slicing splits flags and ZWJ
+      // sequences into fragments that render as a different glyph.
+      return takeGraphemes(val, 1) || undefined
     }),
   shape: z.enum(shapes.options).optional().describe('The shape of the avatar'),
-  gradient: z.enum(gradients.options).optional().describe('The gradient type')
+  gradient: z.enum(gradients.options).optional().describe('The gradient type'),
+  palette: z
+    .enum(palettes.options)
+    .optional()
+    .default('vivid')
+    .describe('The colour range used to derive the gradient'),
+  style: z
+    .enum(styles.options)
+    .optional()
+    .default('gradient')
+    .describe('The kind of avatar to generate')
 })

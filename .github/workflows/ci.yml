@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      - name: Lint and format
+        run: bun run lint
+
+      - name: Typecheck
+        run: bunx tsc --noEmit
+
+      - name: Test
+        run: bun test
+
+      - name: Build
+        run: bun run build
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      # Separate job so a newly disclosed advisory reports on its own instead
+      # of masking a genuine build or test failure.
+      - name: Audit dependencies
+        run: bun audit
