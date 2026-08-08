@@ -53,24 +53,26 @@ export function generatePatternDef(
 export function generatePatternElement(
   pattern: PatternType,
   size: number,
-  rounded: boolean
+  clipped: boolean
 ): string {
   if (!pattern) return ''
 
+  const clipAttr = clipped ? 'clip-path="url(#shapeClip)"' : ''
+
   if (pattern === 'noise') {
-    return `<rect 
-      x="0" y="0" 
-      width="${size}" height="${size}" 
-      fill="rgba(255,255,255,0.03)" 
+    return `<rect
+      x="0" y="0"
+      width="${size}" height="${size}"
+      fill="rgba(255,255,255,0.03)"
       filter="url(#noiseFilter)"
-      ${rounded ? 'clip-path="url(#circleClip)"' : ''}
+      ${clipAttr}
     />`
   }
 
-  return `<rect 
-    fill="url(#bgPattern)" 
-    x="0" y="0" 
-    width="${size}" height="${size}" 
-    ${rounded ? 'clip-path="url(#circleClip)"' : ''}
+  return `<rect
+    fill="url(#bgPattern)"
+    x="0" y="0"
+    width="${size}" height="${size}"
+    ${clipAttr}
   />`
 }
