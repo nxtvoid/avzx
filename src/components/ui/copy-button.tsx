@@ -29,7 +29,7 @@ const CopyButton = ({ text }: { text: string }) => {
       variant='ghost'
       size='icon-xs'
       className={cn(
-        'shrink-0 text-muted-foreground hover:text-foreground',
+        'text-muted-foreground hover:text-foreground shrink-0',
         copied && 'pointer-events-none'
       )}
       onClick={handleCopy}

@@ -48,8 +48,8 @@ const MostPopularExamples = () => {
   return (
     <div className='grid gap-8'>
       <div className='grid gap-2 text-center'>
-        <h2 className='font-mono font-semibold text-2xl'>Most popular</h2>
-        <p className='font-mono text-muted-foreground text-sm'>
+        <h2 className='font-mono text-2xl font-semibold'>Most popular</h2>
+        <p className='text-muted-foreground font-mono text-sm'>
           Every avatar below is one GET request.
         </p>
       </div>
@@ -68,7 +68,7 @@ const MostPopularExamples = () => {
               />
               <AvatarFallback className='size-full animate-pulse rounded-none' />
             </Avatar>
-            <code className='max-w-full truncate font-mono text-muted-foreground text-xs'>
+            <code className='text-muted-foreground max-w-full truncate font-mono text-xs'>
               {example.label}
             </code>
           </li>

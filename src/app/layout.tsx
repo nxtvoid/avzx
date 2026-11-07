@@ -80,7 +80,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang='en' suppressHydrationWarning>
       <body
         className={cn(
-          'scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-thin scrollbar-track-muted scrollbar-thumb-secondary-foreground relative min-h-dvh overflow-x-hidden bg-background font-sans text-secondary-foreground antialiased selection:bg-primary selection:text-accent',
+          'scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-track-muted scrollbar-thumb-secondary-foreground bg-background text-secondary-foreground selection:bg-primary selection:text-accent relative min-h-dvh scrollbar-thin overflow-x-hidden font-sans antialiased',
           geistSans.variable,
           geistMono.variable
         )}

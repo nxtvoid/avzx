@@ -34,7 +34,7 @@ const Playground = () => {
   const previewUrl = `${path}${path.includes('?') ? '&' : '?'}source=self`
 
   return (
-    <div className='space-y-4 rounded-xl border border-border bg-card/70 p-5 backdrop-blur-sm'>
+    <div className='border-border bg-card/70 space-y-4 rounded-xl border p-5 backdrop-blur-sm'>
       <div className='flex flex-col gap-5 sm:flex-row'>
         {/* biome-ignore lint/performance/noImgElement: the point is to show the endpoint's raw response, and the URL changes on every keystroke — routing it through next/image would optimise away what is being previewed. */}
         <img
@@ -106,8 +106,8 @@ const Playground = () => {
         </div>
       </div>
 
-      <div className='flex items-center gap-2 rounded-lg bg-muted/50 py-2 pr-2 pl-3'>
-        <code className='min-w-0 flex-1 truncate font-mono text-foreground text-sm'>
+      <div className='bg-muted/50 flex items-center gap-2 rounded-lg py-2 pr-2 pl-3'>
+        <code className='text-foreground min-w-0 flex-1 truncate font-mono text-sm'>
           {HOST}
           {path}
         </code>

@@ -8,7 +8,7 @@ const LINKS = [
 
 const SiteFooter = () => {
   return (
-    <footer className='mt-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-2 px-6 py-10 font-mono text-muted-foreground text-xs'>
+    <footer className='text-muted-foreground mt-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-2 px-6 py-10 font-mono text-xs'>
       <span>{SITE_CONFIG.name}</span>
       {LINKS.map(({ href, label, Icon }) => (
         <a
@@ -16,7 +16,7 @@ const SiteFooter = () => {
           href={href}
           target='_blank'
           rel='noreferrer'
-          className='flex items-center gap-1.5 transition-colors hover:text-foreground'
+          className='hover:text-foreground flex items-center gap-1.5 transition-colors'
         >
           <Icon className='size-3.5' />
           {label}
