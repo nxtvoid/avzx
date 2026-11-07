@@ -12,15 +12,15 @@ export default function Home() {
     <section className='flex flex-1 flex-col gap-24 px-6 py-16'>
       <article className='flex flex-1 flex-col items-center justify-center gap-6'>
         <div className='grid gap-3 text-center'>
-          <h1 className='font-extrabold text-[clamp(4rem,18vw,10rem)] leading-[0.9] tracking-wider'>
+          <h1 className='text-[clamp(4rem,18vw,10rem)] leading-[0.9] font-extrabold tracking-wider'>
             {SITE_CONFIG.name}
           </h1>
-          <p className='text-pretty font-mono text-base sm:text-lg'>
+          <p className='font-mono text-base text-pretty sm:text-lg'>
             {SITE_CONFIG.description}
           </p>
         </div>
 
-        <div className='flex w-full max-w-sm items-center gap-2 rounded-lg border border-border bg-card/70 py-2 pr-2 pl-3 backdrop-blur-sm'>
+        <div className='border-border bg-card/70 flex w-full max-w-sm items-center gap-2 rounded-lg border py-2 pr-2 pl-3 backdrop-blur-sm'>
           <code className='min-w-0 flex-1 truncate font-mono text-sm'>
             <span className='text-muted-foreground'>{SAMPLE_HOST}/</span>
             <span className='font-medium'>your-name</span>
@@ -28,7 +28,7 @@ export default function Home() {
           <CopyButton text={SAMPLE_URL} />
         </div>
 
-        <Button className='select-none font-mono' asChild>
+        <Button className='font-mono select-none' asChild>
           <Link href='/docs'>Documentation</Link>
         </Button>
       </article>
